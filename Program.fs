@@ -56,12 +56,16 @@ let indexHandler (name : string) =
     let view      = Views.index model
     htmlView view
 
+let time() = System.DateTime.Now.ToString()
+
 let webApp =
     choose [
         GET >=>
             choose [
                 route "/" >=> indexHandler "world"
-                routef "/hello/%s" indexHandler
+                routef "/routef/%s" indexHandler
+                route "/timeBuild" >=> text (time())
+                route "/test" >=> warbler (fun _ -> text (time()))
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
