@@ -46,6 +46,11 @@ module Views =
             p [] [ encodedText model.Text ]
         ] |> layout
 
+    let debugText(text: String) =
+        [   
+            p [] [encodedText text]
+        ] |> layout
+
 // ---------------------------------
 // Web app
 // ---------------------------------
@@ -54,6 +59,18 @@ let indexHandler (name : string) =
     let greetings = sprintf "Hello %s, from Giraffe!" name
     let model     = { Text = greetings }
     let view      = Views.index model
+    htmlView view
+
+let rec fib n = 
+    match n with
+    | 0 | 1 -> n
+    | n -> fib(n-1) + fib(n-2)
+
+
+
+let fibHandler (n: int) = 
+    let fibRes: int = fib n
+    let view = Views.debugText(fibRes.ToString())
     htmlView view
 
 let time() = System.DateTime.Now.ToString()
@@ -66,6 +83,7 @@ let webApp =
                 routef "/routef/%s" indexHandler
                 route "/timeBuild" >=> text (time())
                 route "/test" >=> warbler (fun _ -> text (time()))
+                routef "/fib/%i" fibHandler
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
