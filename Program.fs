@@ -69,8 +69,10 @@ let rec fib n =
 
 
 let fibHandler (n: int) = 
-    let fibRes: int = fib n
-    let view = Views.debugText(fibRes.ToString())
+    let mutable fibString: string = ""
+    for i in 0 .. n do
+        fibString <- fibString + fib(i).ToString() + "\n"
+    let view = Views.debugText(fibString.ToString())
     htmlView view
 
 let time() = System.DateTime.Now.ToString()
